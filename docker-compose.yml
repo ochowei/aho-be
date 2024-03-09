@@ -1,0 +1,12 @@
+version: "3"
+services:
+  mysql:
+    image: mariadb:10.4.13
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    restart: always
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql  # Mount SQL file for initialization
+    ports:
+      - 3306:3306
+

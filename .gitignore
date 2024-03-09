@@ -1,0 +1,10 @@
+node_modules
+log
+docker-compose.local.yml
+.volumes
+local.toml
+package-lock.json
+.nyc_output
+coverage
+.DS_Store
+test-results.xml
