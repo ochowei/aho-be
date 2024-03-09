@@ -8,9 +8,8 @@ router.get("/v1/", (req, res, next) => {
 
 router.post("/v1/", (req, res, next) => {
   const { email, password } = req.body;
-  console.log("email", email);
-  console.log("password", password);
-  res.send({ user_id: "123", nickname: "mock-user", email: email });
-});
+  res.response = {data: { user_id: "123", nickname: "mock-user", email }};
+  next();
+}, handleResponse);
 
 module.exports = router;
