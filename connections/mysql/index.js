@@ -3,6 +3,7 @@ const mysql = require('mysql');
 const { promisify } = require('util');
 
 const { debug } = require('../../config').system;
+const { setupModels } = require('../../models');
 
 const MYSQL_CONNECTION_POOL_SIZE = 10;
 // support type bigInt
@@ -33,13 +34,28 @@ const defaultOptions = {
 //     };
 //   });
 // };
-
+const pools = {};
+let poolCluster = {};
+const setupMysql = async (config) => {
+  poolCluster = mysql.createPoolCluster({
+    restoreNodeTimeout: 1000,
+  });
+  Object.keys(config).forEach((db) => {
+    poolCluster.add(db, { ...config[db], ...defaultOptions });
+    const pool = poolCluster.of(db, 'RANDOM');
+    pools[db] = pool;
+    pool.query = promisify(pool.query);
+    pool.getConnection = promisify(pool.getConnection);
+  });
+  await pools.master.getConnection();
+};
 // sequelize
 const sequelizePool = {};
 let alreadyInit = false;
-const initSequelize = (config) => {
+const initSequelize = async (config) => {
   if (alreadyInit) return;
   alreadyInit = true;
+  await setupMysql(config);
   Object.keys(config).forEach((db) => {
     const conn = new Sequelize(
       config[db].database,
@@ -67,27 +83,12 @@ const initSequelize = (config) => {
     );
     sequelizePool[db] = conn;
   });
+  await setupModels(sequelizePool.master);
 };
 
 /**
  * mysql version
  */
-
-const pools = {};
-let poolCluster = {};
-const setupMysql = async (config) => {
-  poolCluster = mysql.createPoolCluster({
-    restoreNodeTimeout: 1000,
-  });
-  Object.keys(config).forEach((db) => {
-    poolCluster.add(db, { ...config[db], ...defaultOptions });
-    const pool = poolCluster.of(db, 'RANDOM');
-    pools[db] = pool;
-    pool.query = promisify(pool.query);
-    pool.getConnection = promisify(pool.getConnection);
-  });
-  await pools.master.getConnection();
-};
 
 // const releaseMysql = async () => {
 //   poolCluster.end(error => {

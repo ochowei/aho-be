@@ -19,9 +19,10 @@ app.use(cors(config.cors));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-const { setupMysql, initSequelize } = require('./connections/mysql');
+const { initSequelize } = require('./connections/mysql');
 
 initSequelize(config.mysql); // TODO: error handle
+
 const middleware = require('./middlewares/common/handler');
 const routes = require('./routes');
 
@@ -62,12 +63,6 @@ app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 const afterServer = async () => {
   consoleLogger.log(`[SERVER] server listen on ${PORT}`);
-  try {
-    await setupMysql(config.mysql);
-    consoleLogger.log('[MYSQL] connect to mysql successful');
-  } catch (error) {
-    consoleLogger.error(error);
-  }
 };
 const server = app.listen(PORT, afterServer);
 

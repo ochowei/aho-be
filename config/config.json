@@ -1,6 +1,6 @@
 {
   "api": {
-    "master": { "domain": "localhost", "port": 3001 }
+    "master": { "domain": "localhost", "port": 3002 }
   },
   "mysql": {
     "master": {

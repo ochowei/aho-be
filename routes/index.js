@@ -4,6 +4,7 @@ const express = require('express');
 
 const hello = require('./api/hello');
 const login = require('./api/login');
+const auth0db = require('./api/auth0db');
 
 const router = express.Router();
 let commitId = null;
@@ -24,6 +25,7 @@ const routes = {
   setup: (app) => {
     app.use('/api/hello', hello);
     app.use('/api/login', login);
+    app.use('/api/auth0db', auth0db);
 
     // provide commit_id api
     router.get('/commit_id', (req, res) => {
