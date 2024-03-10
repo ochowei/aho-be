@@ -9,19 +9,18 @@ const self = {
    */
   handleResponse: async (req = {}, res = {}) => {
     if (!res.response) res.response = {};
-    let {
-      type = "application/json",
+    const {
+      type = 'application/json',
       code = 0,
       msg = `${req.method} ${req.baseUrl}${req.path} successful`,
-      data = {}
+      data = {},
     } = res.response;
     if (code !== 0) {
       res.locals.logger.warn(`code: ${code}`);
     }
     const response = { code, msg, data };
-    res.set("Content-Type", type);
+    res.set('Content-Type', type);
     res.send(response);
-    return;
   },
 
   /**
@@ -34,19 +33,18 @@ const self = {
    */
   handleOnlyStringResponse: async (req = {}, res = {}) => {
     if (!res.response) res.response = {};
-    let {
-      type = "application/json",
+    const {
+      type = 'application/json',
       code = 0,
-      msg = `${req.method} ${req.baseUrl}${req.path} successful`
+      msg = `${req.method} ${req.baseUrl}${req.path} successful`,
     } = res.response;
     if (code !== 0) {
       res.locals.logger.warn(`code: ${code}`);
     }
     const response = code === 0 ? msg : { code, msg };
-    res.set("Content-Type", type);
+    res.set('Content-Type', type);
     res.send(response);
-    return;
-  }
+  },
 };
 
 module.exports = self;

@@ -1,0 +1,16 @@
+{
+  "parser": "babel-eslint",
+  "env": {
+    "node": true,
+    "mocha": true,
+    "es6": true
+  },
+  "extends": ["eslint:recommended", "airbnb"],
+  "parserOptions": {
+    "ecmaVersion": 12
+  },
+  "rules": {
+    "strict": ["error", "global"]
+  },
+  "ignorePatterns": ["node_modules/", "dist/", "test.js"]
+}

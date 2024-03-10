@@ -1,7 +1,7 @@
-const bunyan = require("bunyan");
-const fs = require("fs");
-const shelljs = require("shelljs");
-const config = require("../../config");
+const Bunyan = require('bunyan');
+const fs = require('fs');
+const shelljs = require('shelljs');
+const config = require('../../config');
 
 const exist = (path) => {
   try {
@@ -14,10 +14,11 @@ const exist = (path) => {
 
 const mkdir = (path) => {
   try {
-    shelljs.mkdir("-p", path);
-    return true;
+    shelljs.mkdir('-p', path);
+    return;
   } catch (error) {
-    console.log(error);
+    const logger = console;
+    logger.error(error);
   }
 };
 
@@ -25,16 +26,16 @@ const logDir = config.log.dir;
 if (exist(logDir) === false) {
   mkdir(logDir);
 }
-
-module.exports = (name) => {
-  return new bunyan({
+function createLogger(name) {
+  return new Bunyan({
     name,
     src: true,
     streams: [
       {
-        level: "trace",
-        path: `${logDir}/access.log`
-      }
-    ]
+        level: 'trace',
+        path: `${logDir}/access.log`,
+      },
+    ],
   });
-};
+}
+module.exports = createLogger;

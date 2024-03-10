@@ -1,15 +1,18 @@
-const { Sequelize } = require("sequelize");
-const debug = require("../../config").system.debug;
+const { Sequelize } = require('sequelize');
+const mysql = require('mysql');
+const { promisify } = require('util');
 
+const { debug } = require('../../config').system;
+
+const MYSQL_CONNECTION_POOL_SIZE = 10;
 // support type bigInt
 const defaultOptions = {
   supportBigNumbers: true,
   bigNumberStrings: true,
-  charset: "utf8mb4",
-  connectTimeout: 30000
+  charset: 'utf8mb4',
+  connectTimeout: 30000,
   // decimalNumbers: true
 };
-
 /**
  * mariadb version setup function
  */
@@ -32,11 +35,11 @@ const defaultOptions = {
 // };
 
 // sequelize
-let sequelizePool = {};
-let already_init = false;
+const sequelizePool = {};
+let alreadyInit = false;
 const initSequelize = (config) => {
-  if (already_init) return;
-  already_init = true;
+  if (alreadyInit) return;
+  alreadyInit = true;
   Object.keys(config).forEach((db) => {
     const conn = new Sequelize(
       config[db].database,
@@ -45,22 +48,22 @@ const initSequelize = (config) => {
       {
         host: config[db].host,
         port: config[db].port,
-        dialect: "mariadb",
+        dialect: 'mariadb',
         dialectOptions: Object.assign(defaultOptions, {
           // Your mariadb options here
           // connectTimeout: 1000
           requestTimeout: 3000,
-          useUTC: false, //for reading from database
+          useUTC: false, // for reading from database
           // timezone: "Etc/GMT+0", //for writing to database
-          skipSetTimezone: true
+          skipSetTimezone: true,
         }),
         logging: debug,
         pool: {
           max: MYSQL_CONNECTION_POOL_SIZE,
           min: 0,
-          idle: 10000
-        }
-      }
+          idle: 10000,
+        },
+      },
     );
     sequelizePool[db] = conn;
   });
@@ -69,25 +72,21 @@ const initSequelize = (config) => {
 /**
  * mysql version
  */
-const mysql = require("mysql");
-const MYSQL_CONNECTION_POOL_SIZE = 10;
-const promisify = require("util").promisify;
-let pools = {};
+
+const pools = {};
 let poolCluster = {};
 const setupMysql = async (config) => {
   poolCluster = mysql.createPoolCluster({
-    restoreNodeTimeout: 1000
+    restoreNodeTimeout: 1000,
   });
   Object.keys(config).forEach((db) => {
     poolCluster.add(db, { ...config[db], ...defaultOptions });
-    const pool = poolCluster.of(db, "RANDOM");
+    const pool = poolCluster.of(db, 'RANDOM');
     pools[db] = pool;
     pool.query = promisify(pool.query);
     pool.getConnection = promisify(pool.getConnection);
   });
-  for (const pool in pools) {
-    await pools[pool].getConnection();
-  }
+  await pools.master.getConnection();
 };
 
 // const releaseMysql = async () => {
@@ -96,4 +95,9 @@ const setupMysql = async (config) => {
 //   });
 // };
 
-module.exports = { mysql: pools, setupMysql, initSequelize, sequelizePool };
+module.exports = {
+  mysql: pools,
+  setupMysql,
+  initSequelize,
+  sequelizePool,
+};

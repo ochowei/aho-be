@@ -1,33 +1,38 @@
-const log = require("../../helpers/common/log");
-const logger = log("http");
-const apiLogger = log("api");
-const { v4: uuidv4 } = require("uuid");
-const cls = require("simple-continuation-local-storage");
+const cls = require('simple-continuation-local-storage');
+const { v4: uuidv4 } = require('uuid');
+
+const log = require('../../helpers/common/log');
+
+const logger = log('http');
+const apiLogger = log('api');
 
 const self = {
   traceID: (req, res, next) => {
     const traceid = uuidv4();
-    const localLogger = apiLogger.child({ "traceid": traceid });
+    const localLogger = apiLogger.child({ traceid });
     res.locals.logger = localLogger;
     cls.traceid = traceid;
     cls.logger = localLogger;
-    res.header("X-TRACE-ID", traceid);
+    res.header('X-TRACE-ID', traceid);
     next();
   },
 
   log: (req, res, duration) => {
-    const { method, ip, hostname, headers } = req;
+    const {
+      method, ip, hostname, headers,
+    } = req;
+
     const { statusCode } = res;
-    const path = (req.baseUrl ?? "") + req.path;
-    if (path.includes("/playone/docs") || path === "/commit_id") {
+    const path = (req.baseUrl ?? '') + req.path;
+    if (path.includes('/playone/docs') || path === '/commit_id') {
       return;
     }
     const { platform, version } = headers;
-    const userId = headers["user-id"];
-    const traceid = res.get("X-TRACE-ID");
+    const userId = headers['user-id'];
+    const traceid = res.get('X-TRACE-ID');
     // TODO: ES key size limit
-    //const query = req.query;
-    //const queryKey = `query-${path}`;
+    // const query = req.query;
+    // const queryKey = `query-${path}`;
     const text = {
       method,
       path,
@@ -35,14 +40,14 @@ const self = {
       hostname,
       duration,
       statusCode,
-      //[queryKey]: query,
+      // [queryKey]: query,
       platform,
       version,
-      userId
+      userId,
     };
 
     logger.trace({ log: text, traceid });
-  }
+  },
 };
 
 module.exports = self;

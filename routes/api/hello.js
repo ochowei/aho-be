@@ -1,14 +1,15 @@
-const express = require("express");
+const express = require('express');
+
 const router = express.Router();
-const { handleResponse } = require("../../services/common/response");
+const { handleResponse } = require('../../services/common/response');
 
 router.get(
-  "/v1/world",
+  '/v1/world',
   (req, res, next) => {
-    res.response = { msg: "hello world" };
+    res.response = { msg: 'hello world' };
     next();
   },
-  handleResponse
+  handleResponse,
 );
 
 module.exports = router;

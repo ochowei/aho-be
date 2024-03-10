@@ -1,14 +1,15 @@
-const path = require("path");
-const pathBase = path.resolve(__dirname, "..");
+const path = require('path');
+
+const pathBase = path.resolve(__dirname, '..');
 const config = {
-  env: process.env.ENV || "development",
+  env: process.env.ENV || 'development',
   log: {
-    dir: path.resolve(pathBase, "log")
-  }
+    dir: path.resolve(pathBase, 'log'),
+  },
 };
 
 let overrides = {};
-overrides = require("./config.json");
+overrides = require('./config.json');
 
 Object.assign(config, overrides);
 

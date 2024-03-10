@@ -1,4 +1,4 @@
-const { expect, assert } = require("chai");
+const { expect, assert } = require('chai');
 
 // describe() 描述區塊測試內容，可視為一個測試的群組，裡面可以跑很多條測試。
 // it() 可撰寫每條測試內容
@@ -12,11 +12,11 @@ const { expect, assert } = require("chai");
 // * Should 在瀏覽器環境下，對 IE 有相容問題
 // * Should 無法客製化錯誤訊息
 
-describe("example test", () => {
-  it("test add equal", () => {
+describe('example test', () => {
+  it('test add equal', () => {
     expect(5 + 5).to.be.equal(10);
   });
-  it("test is true", () => {
+  it('test is true', () => {
     const test = true;
     assert.isTrue(test);
   });
