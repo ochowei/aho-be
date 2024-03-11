@@ -11,7 +11,7 @@ const self = {
      *
      * @param {string} email
      * @param {string} password
-     * @returns {Promise<boolean>}
+     * @returns {Promise<{user_id: string, nickname: string, email: string}
      */
   comparePassword: async (email, password) => {
     const userAuth = await models.UserAuth.findOne({
@@ -19,9 +19,24 @@ const self = {
         email,
       },
     });
+    if (!userAuth) {
+      throw new Error('User not found');
+    }
     const storedHash = userAuth.encryptedPassword;
     const r = await bcrypt.compare(password, storedHash);
-    return r;
+    if (!r) {
+      throw new Error('Password is incorrect');
+    }
+    const sub = `${provider}|${email}`;
+    const user = await models.User.findOne({
+      where: {
+        sub,
+      },
+    });
+    if (!user) {
+      throw new Error('User not found');
+    }
+    return { user_id: user.userId, nickname: user.nickname, email: user.email };
   },
 
   /**

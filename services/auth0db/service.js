@@ -1,16 +1,18 @@
 const helper = require('./helper');
+const { RESPONSE_CODE } = require('../../helpers/common/response');
 
 const self = {
   login: async (req, res, next) => {
     /** @type {{email: string, password: string}} */
     const { email, password } = req.body;
-    const comparePassword = await helper.comparePassword(email, password);
-    if (!comparePassword) {
-      res.response = { msg: 'login failed' };
-      return next();
+    try {
+      const user = await helper.comparePassword(email, password);
+      res.response = { data: user };
+    } catch (err) {
+      res.response = { code: RESPONSE_CODE.UNAUTHORIZED, msg: err.message };
+    } finally {
+      next();
     }
-    res.response = { msg: 'login success' };
-    return next();
   },
   create: async (req, res, next) => {
     /** @type {{email: string, password: string}} */
@@ -19,7 +21,7 @@ const self = {
       await helper.createUser(email, password);
       res.response = { msg: 'create user success' };
     } catch (err) {
-      res.response = { msg: 'create user failed' };
+      res.response = { code: RESPONSE_CODE.INVALID_PARAMS, msg: err.message };
     } finally {
       next();
     }
