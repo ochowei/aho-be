@@ -11,7 +11,10 @@ const self = {
      *
      * @param {string} email
      * @param {string} password
-     * @returns {Promise<{user_id: string, nickname: string, email: string}
+     * @returns {Promise<{user_id: string,
+     *  nickname: string,
+     *  email: string,
+     *  emailVerified: string}>}
      */
   comparePassword: async (email, password) => {
     const userAuth = await models.UserAuth.findOne({
@@ -36,7 +39,12 @@ const self = {
     if (!user) {
       throw new Error('User not found');
     }
-    return { user_id: user.userId, nickname: user.nickname, email: user.email };
+    return {
+      user_id: user.userId,
+      nickname: user.nickname,
+      email: user.email,
+      emailVerified: user.emailVerified,
+    };
   },
 
   /**
