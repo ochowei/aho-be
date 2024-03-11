@@ -9,3 +9,4 @@ coverage
 .DS_Store
 test-results.xml
 test.js
+auth_config.json

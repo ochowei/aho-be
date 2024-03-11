@@ -1,0 +1,6 @@
+{
+    "domain": "http://localhost:3000",
+    "clientId": "123456789",
+    "audience": "http://localhost:3000",
+    "secToken": "123456789"
+}
