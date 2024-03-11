@@ -62,20 +62,28 @@ const self = {
     const { email } = req.query;
     try {
       const user = await helper.loginByEmail(email);
+
       res.response = { data: user };
+      next();
     } catch (err) {
-      res.response = { msg: 'login failed' };
-    } finally {
+      if (err.message === 'User not found') {
+        res.response = { code: RESPONSE_CODE.NOT_FOUND, msg: err.message };
+      }
+      res.response = { code: RESPONSE_CODE.UNAUTHORIZED, msg: err.message };
       next();
     }
   },
   remove: async (req, res, next) => {
     /** @type {{id: *}} */
     const { id } = req.body;
-    const logger = console;
-    logger.log('remove', id);
-    res.response = { msg: 'remove success' };
-    next();
+    try {
+      await helper.remove(Number(id));
+      res.response = { msg: 'remove success' };
+    } catch (err) {
+      res.response = { msg: err.message };
+    } finally {
+      next();
+    }
   },
 };
 module.exports = self;
