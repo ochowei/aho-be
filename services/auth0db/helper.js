@@ -101,9 +101,27 @@ const self = {
       },
     });
     if (!user) {
-      return { user_id: '', email: '', nickname: '' };
+      throw new Error('User not found');
     }
     return { user_id: user.userId, nickname: user.nickname, email: user.email };
+  },
+  /**
+   * @param {number} id
+   * @returns {Promise<void>}
+   */
+  remove: async (id) => {
+    const user = await models.User.findOne({
+      where: {
+        userId: id,
+      },
+    });
+    const { email } = user;
+    await user.destroy();
+    await models.UserAuth.destroy({
+      where: {
+        email,
+      },
+    });
   },
 };
 module.exports = self;
