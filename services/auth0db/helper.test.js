@@ -12,8 +12,15 @@ describe('test createUser&comparePassword', () => {
     const password = 'fakepassword';
     await helper.createUser(email, password);
     const comparePassword = await helper.comparePassword(email, password);
-    const wrongPassword = await helper.comparePassword(email, 'wrongpassword');
-    expect(comparePassword).to.equal(true);
-    expect(wrongPassword).to.equal(false);
+    let error;
+
+    try {
+      const wrongPassword = await helper.comparePassword(email, 'wrongpassword');
+    } catch (err) {
+      error = err;
+    }
+
+    expect(!!comparePassword).to.equal(true);
+    expect(!!error).to.equal(true);
   });
 });
