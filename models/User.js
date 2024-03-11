@@ -35,13 +35,31 @@ const setupUser = async (sequelize) => {
       allowNull: true,
       defaultValue: DataTypes.NOW,
     },
+    lastSessionDateOnly: {
+      type: DataTypes.DATEONLY,
+      allowNull: true,
+      defaultValue: DataTypes.NOW,
+    },
     lastIp: DataTypes.STRING,
-    loginsCount: DataTypes.INTEGER,
+    loginsCount: {
+      type: DataTypes.INTEGER,
+      defaultValue: 1,
+      allowNull: false,
+    },
     familyName: DataTypes.STRING,
     givenName: DataTypes.STRING,
     locale: DataTypes.STRING,
   }, {
-    sequelize, modelName: 'user', engine: 'InnoDB', charset: 'utf8', collate: 'utf8_general_ci',
+    sequelize,
+    modelName: 'user',
+    engine: 'InnoDB',
+    charset: 'utf8',
+    collate: 'utf8_general_ci',
+    indexes: [
+      {
+        fields: ['lastSessionDateOnly'],
+      },
+    ],
   });
   await User.sync({ alter: true });
 };
