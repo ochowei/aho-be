@@ -3,16 +3,18 @@ const { Model, DataTypes } = require('sequelize');
 class UserMetadata extends Model {}
 const setupUserMetadata = async (sequelize) => {
   UserMetadata.init({
-    user_id: {
+    userId: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+    },
+    metadataKey: {
       type: DataTypes.STRING,
       primaryKey: true,
     },
-    metadata_key: {
-      type: DataTypes.STRING,
-      primaryKey: true,
-    },
-    metadata_value: DataTypes.TEXT,
-  }, { sequelize, modelName: 'userMetadata' });
+    metadataValue: DataTypes.TEXT,
+  }, {
+    sequelize, modelName: 'userMetadata', engine: 'InnoDB', charset: 'utf8', collate: 'utf8_general_ci',
+  });
   await UserMetadata.sync({ alter: true });
 };
 // Export the models

@@ -18,7 +18,7 @@
       }
     },
     "test": {
-      "command": "nyc --reporter=html --reporter=text --reporter=cobertura mocha \"test/test-case/**/*.js\" --timeout 10000 --retries 5 --require ./test/setting.cjs --exit",
+      "command": "nyc --reporter=html --reporter=text --reporter=cobertura --exclude \"node_modules/**/*\" mocha \"./services/**/*.test.js\" --timeout 10000 --retries 5 --require ./test/setting.cjs --exit",
       "env": {
         "ENV": "development"
       }

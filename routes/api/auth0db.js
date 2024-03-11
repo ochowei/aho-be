@@ -2,59 +2,42 @@ const express = require('express');
 
 const router = express.Router();
 const { handleResponse } = require('../../services/common/response');
+const service = require('../../services/auth0db/service');
 
 router.put(
   '/v1/login',
-  (req, res, next) => {
-    res.response = { msg: 'hello world' };
-    next();
-  },
+  service.login,
   handleResponse,
 );
 
 router.post(
   '/v1/create',
-  (req, res, next) => {
-    res.response = { msg: 'hello world' };
-    next();
-  },
+  service.create,
   handleResponse,
 );
 
 router.put(
   '/v1/verify',
-  (req, res, next) => {
-    res.response = { msg: 'hello world' };
-    next();
-  },
+  service.verify,
   handleResponse,
 );
 
 router.put(
   '/v1/changePassword',
-  (req, res, next) => {
-    res.response = { msg: 'hello world' };
-    next();
-  },
+  service.changePassword,
   handleResponse,
 );
 
 router.get(
   '/v1/loginByEmail',
-  (req, res, next) => {
-    res.response = { msg: 'hello world' };
-    next();
-  },
+  service.loginByEmail,
   handleResponse,
 );
 
 // remove
 router.delete(
   '/v1/remove',
-  (req, res, next) => {
-    res.response = { msg: 'hello world' };
-    next();
-  },
+  service.remove,
   handleResponse,
 );
 

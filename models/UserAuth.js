@@ -3,27 +3,24 @@ const { Model, DataTypes } = require('sequelize');
 class UserAuth extends Model {}
 const setupUserAuth = async (sequelize) => {
   UserAuth.init({
-    user_id: {
-      type: DataTypes.STRING,
+    id: {
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
       primaryKey: true,
     },
-    encrypted_password: {
+    email: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      unique: true,
+    },
+    encryptedPassword: { // modified property name to camel case
       type: DataTypes.STRING,
       allowNull: false,
     },
-    created_at: {
-      type: DataTypes.DATE,
-      allowNull: false,
-      defaultValue: DataTypes.NOW,
-    },
-    updated_at: {
-      type: DataTypes.DATE,
-      allowNull: false,
-      defaultValue: DataTypes.NOW,
-    },
+
   }, {
-    sequelize, modelName: 'userAuth', timestamps: true, updatedAt: 'updated_at', createdAt: 'created_at',
-  });
+    sequelize, modelName: 'userAuth', engine: 'InnoDB', charset: 'utf8', collate: 'utf8_general_ci',
+  }); // modified model name to camel case
   await UserAuth.sync({ alter: true });
 };
 

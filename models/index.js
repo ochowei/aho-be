@@ -1,7 +1,7 @@
-const { setupUser } = require('./User');
-const { setupIdentity } = require('./Identity');
-const { setupUserMetadata } = require('./UserMetadata');
-const { setupUserAuth } = require('./UserAuth');
+const { setupUser, User } = require('./User');
+const { setupIdentity, Identity } = require('./Identity');
+const { setupUserMetadata, UserMetadata } = require('./UserMetadata');
+const { setupUserAuth, UserAuth } = require('./UserAuth');
 
 const setupModels = async (sequelize) => {
   await setupUser(sequelize);
@@ -10,4 +10,11 @@ const setupModels = async (sequelize) => {
   await setupUserAuth(sequelize);
 };
 
-module.exports = { setupModels };
+const models = {
+  User,
+  Identity,
+  UserMetadata,
+  UserAuth,
+};
+
+module.exports = { setupModels, models };

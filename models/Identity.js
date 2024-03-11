@@ -8,12 +8,14 @@ const setupIdentity = async (sequelize) => {
       primaryKey: true,
       autoIncrement: true,
     },
-    user_id: DataTypes.STRING,
+    userId: DataTypes.INTEGER,
     provider: DataTypes.STRING,
-    user_id_from_provider: DataTypes.STRING,
+    userIdFromProvider: DataTypes.STRING,
     connection: DataTypes.STRING,
     isSocial: DataTypes.BOOLEAN,
-  }, { sequelize, modelName: 'identity' });
+  }, {
+    sequelize, modelName: 'identity', engine: 'InnoDB', charset: 'utf8', collate: 'utf8_general_ci',
+  });
   await Identity.sync({ alter: true });
 };
 // Export the models
