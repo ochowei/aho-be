@@ -59,7 +59,7 @@ const self = {
   },
   loginByEmail: async (req, res, next) => {
     /** @type {{email: string}} */
-    const { email } = req.body;
+    const { email } = req.query;
     try {
       const user = await helper.loginByEmail(email);
       res.response = { data: user };
