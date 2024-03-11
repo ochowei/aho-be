@@ -25,8 +25,16 @@ const setupUser = async (sequelize) => {
     name: DataTypes.STRING,
     nickname: DataTypes.STRING,
     picture: DataTypes.STRING,
-    lastLogin: DataTypes.DATE,
-    lastSession: DataTypes.DATE,
+    lastLogin: {
+      type: DataTypes.DATE,
+      allowNull: true,
+      defaultValue: DataTypes.NOW,
+    },
+    lastSession: {
+      type: DataTypes.DATE,
+      allowNull: true,
+      defaultValue: DataTypes.NOW,
+    },
     lastIp: DataTypes.STRING,
     loginsCount: DataTypes.INTEGER,
     familyName: DataTypes.STRING,
