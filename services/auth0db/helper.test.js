@@ -15,7 +15,7 @@ describe('test createUser&comparePassword', () => {
     let error;
 
     try {
-      const wrongPassword = await helper.comparePassword(email, 'wrongpassword');
+      await helper.comparePassword(email, 'wrongpassword');
     } catch (err) {
       error = err;
     }
