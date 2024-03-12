@@ -28,8 +28,13 @@ paths:
       responses:
         '200':
           description: Successful login
+        # email invalid
+        '400':
+          description: Email invalid
+        # password invalid
         '401':
           description: Unauthorized
+        
         '403':
           description: Forbiddens
 
