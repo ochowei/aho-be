@@ -179,3 +179,111 @@ paths:
         # secToken invalid
         '403':
           description: Forbidden
+
+
+  /dashboard/v1/users:
+    get:
+      summary: Get all users
+      tags:
+        - "dashboard"
+      parameters:
+        # for pagination
+        - name: page
+          in: query
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+        - name: pageSize
+          in: query
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            default: 20
+      responses:
+        '200':
+          description: Successful get
+          # response format
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      rows:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            userId:
+                              type: integer
+                              minimum: 0
+                              example: 1
+                            nickname:
+                              type: string
+                              example: "user1"
+                            lastSession:
+                              type: string
+                              format: date-time
+                              example: "2021-01-01T00:00:00Z"
+                            lastLogin:
+                              type: string
+                              format: date-time
+                              example: "2021-01-01T00:00:00Z"
+                            loginCount:
+                              type: integer
+                              minimum: 0
+                              example: 100
+                            email:
+                              type: string
+                              example: "example@gmail.com"
+                            createdAt:
+                              type: string
+                              format: date-time
+                              example: "2021-01-01T00:00:00Z"
+                       
+                  count:
+                    type: integer
+                    minimum: 0
+                    example: 100
+
+  /dashboard/v1/summary:
+    get:
+      summary: Get users summary
+      tags:
+        - "dashboard"
+      responses:
+        '200':
+          description: Successful get
+          # response format
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      userCount:
+                        type: integer
+                        minimum: 0
+                        example: 100
+                      userSessionCount:
+                        type: object
+                        properties:
+                          todayTotal:
+                            type: integer
+                            minimum: 0
+                            example: 100
+                          last7DaysAverage:
+                            type: integer
+                            minimum: 0
+                            example: 100
+
+   
+          
+        
