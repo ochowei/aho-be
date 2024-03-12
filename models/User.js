@@ -59,6 +59,9 @@ const setupUser = async (sequelize) => {
       {
         fields: ['lastSessionDateOnly'],
       },
+      {
+        fields: ['lastSession'],
+      },
     ],
   });
   await User.sync({ alter: true });
