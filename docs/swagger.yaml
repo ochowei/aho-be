@@ -1,0 +1,176 @@
+openapi: 3.0.0
+info:
+  title: AhoBe API
+  version: 1.0.0
+  description: AhoBe API documentation
+servers:
+  - url: http://localhost:3002/api
+
+paths:
+  /auth0db/v1/login:
+    put:
+      summary: Login endpoint
+      tags:
+        - "auth0db"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+                secToken:
+                  type: string
+      responses:
+        '200':
+          description: Successful login
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbiddens
+
+  /auth0db/v1/create:
+    post:
+      summary: Create user auth0 endpoint
+      tags:
+        - "auth0db"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+                secToken:
+                  type: string
+      responses:
+        '200':
+          description: Successful creation
+         # password invalid
+        '400':
+          description: email or password invalids
+        # user already exists
+        '409':
+          description: User already exists
+        # secToken invalid
+        '403':
+          description: Forbidden
+       
+  
+  /auth0db/v1/verify:
+    put:
+      summary: Verify email
+      tags:
+        - "auth0db"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                secToken:
+                  type: string
+      responses:
+        '200':
+          description: Successful verification
+        # user already verified
+        # '409':
+        #   description: User already verified
+        # secToken invalid
+        '403':
+          description: Forbidden
+
+  /auth0db/v1/changePassword:
+    put:
+      summary: Change password
+      tags:
+        - "auth0db"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+                secToken:
+                  type: string
+      responses:
+        '200':
+          description: Successful change
+        # user not found
+        '404':
+          description: User not found
+        # password invalid
+        '400':
+          description: email or password invalids
+        # newPassword invalid
+        '403':
+          description: Forbidden
+
+  /auth0db/v1/loginByEmail:
+    put:
+      summary: Login by email
+      tags:
+        - "auth0db"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                secToken:
+                  type: string
+      responses:
+        '200':
+          description: Successful login
+        '400':
+          description: Email invalid
+        # user not found
+        '404':
+          description: User not found
+        '403':
+          description: Forbiddens
+
+  /auth0db/v1/remove:
+    delete:
+      summary: Remove user
+      tags:
+        - "auth0db"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                secToken:
+                  type: string
+      responses:
+        '200':
+          description: Successful remove
+        # user not found
+        '404':
+          description: User not found
+        # secToken invalid
+        '403':
+          description: Forbidden

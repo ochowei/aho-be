@@ -17,8 +17,9 @@ const self = {
     } = res.response;
     if (code !== 0) {
       res.locals.logger.warn(`code: ${code}`);
+      res.status(code);
     }
-    const response = { code, msg, data };
+    const response = { msg, data };
     res.set('Content-Type', type);
     res.send(response);
   },

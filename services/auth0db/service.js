@@ -1,5 +1,6 @@
 const helper = require('./helper');
 const { RESPONSE_CODE } = require('../../helpers/common/response');
+const logger = require('../../helpers/common/log')('auth0db');
 
 const self = {
   login: async (req, res, next) => {
@@ -9,10 +10,10 @@ const self = {
       const user = await helper.comparePassword(email, password);
       res.response = { data: user };
     } catch (err) {
-      res.response = { code: RESPONSE_CODE.UNAUTHORIZED, msg: err.message };
-    } finally {
-      next();
+      logger.error(err);
+      res.response = { code: RESPONSE_CODE.UNAUTHORIZED, msg: err.msg };
     }
+    next();
   },
   create: async (req, res, next) => {
     /** @type {{email: string, password: string}} */
@@ -21,10 +22,9 @@ const self = {
       await helper.createUser(email, password);
       res.response = { msg: 'create user success' };
     } catch (err) {
-      res.response = { code: RESPONSE_CODE.INVALID_PARAMS, msg: err.message };
-    } finally {
-      next();
+      res.response = { code: RESPONSE_CODE.USERID_EXIST, msg: err.message };
     }
+    next();
   },
   verify: async (req, res, next) => {
     /** @type {{email: string}} */
@@ -49,7 +49,7 @@ const self = {
       if (changePasswordResult) {
         res.response = { msg: 'change password success' };
       } else {
-        res.response = { msg: 'change password failed' };
+        res.response = { code: RESPONSE_CODE.NOT_FOUND, msg: 'User not found' };
       }
     } catch (err) {
       res.response = { msg: err.message };
@@ -66,10 +66,8 @@ const self = {
       res.response = { data: user };
       next();
     } catch (err) {
-      if (err.message === 'User not found') {
-        res.response = { code: RESPONSE_CODE.NOT_FOUND, msg: err.message };
-      }
-      res.response = { code: RESPONSE_CODE.UNAUTHORIZED, msg: err.message };
+      res.response = { code: RESPONSE_CODE.NOT_FOUND, msg: err.message };
+
       next();
     }
   },
@@ -80,7 +78,7 @@ const self = {
       await helper.remove(Number(id));
       res.response = { msg: 'remove success' };
     } catch (err) {
-      res.response = { msg: err.message };
+      res.response = { code: RESPONSE_CODE.NOT_FOUND, msg: err.message };
     } finally {
       next();
     }
