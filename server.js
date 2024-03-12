@@ -6,7 +6,7 @@ const cors = require('cors');
 const responseTime = require('response-time');
 const swaggerUi = require('swagger-ui-express');
 const config = require('./config');
-const { RESPONSE_CODE, RESPONSE_MSG } = require('./helpers/common/response');
+const { RESPONSE_CODE } = require('./helpers/common/response');
 const { handleInterrupt, handleException } = require('./process');
 const logger = require('./helpers/common/log')('uncaught');
 
@@ -50,7 +50,6 @@ app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
     const response = {
       code: RESPONSE_CODE.UNHANDLED_ERROR,
-      msg: RESPONSE_MSG.UNHANDLED_ERROR,
       data: {},
     };
     res.send({ response });

@@ -202,6 +202,11 @@ paths:
             type: integer
             minimum: 1
             default: 20
+        - name: sub
+          in: header
+          required: false
+          schema:
+            type: string
       responses:
         '200':
           description: Successful get
@@ -256,6 +261,12 @@ paths:
       summary: Get users summary
       tags:
         - "dashboard"
+      parameters:
+        - name: sub
+          in: header
+          required: false
+          schema:
+            type: string
       responses:
         '200':
           description: Successful get

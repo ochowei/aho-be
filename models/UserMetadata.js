@@ -15,7 +15,7 @@ const setupUserMetadata = async (sequelize) => {
   }, {
     sequelize, modelName: 'userMetadata', engine: 'InnoDB', charset: 'utf8', collate: 'utf8_general_ci',
   });
-  await UserMetadata.sync({ alter: true });
+  await UserMetadata.sync({ alter: false });
 };
 // Export the models
 module.exports = { UserMetadata, setupUserMetadata };

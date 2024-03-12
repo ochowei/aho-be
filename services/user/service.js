@@ -15,7 +15,9 @@ const getManagementApiToken = async () => {
   } = managementToken;
   try {
     const response = await axios.post(`https://${domain}/oauth/token`, {
+      // eslint-disable-next-line
       client_id,
+      // eslint-disable-next-line
       client_secret,
       audience,
       grant_type: 'client_credentials',

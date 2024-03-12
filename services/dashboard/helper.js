@@ -5,6 +5,7 @@ const { models } = require('../../models');
 const self = {
   /**
      *
+     * @param {string} sub
      * @param {number} page
      * @param {number} pageSize
      * @returns {Promise<{rows: Array<{
@@ -17,7 +18,26 @@ const self = {
      *  createdAt: Date
      * }>, count: number}>}
      */
-  listUsers: async (page = 1, pageSize = 20) => {
+  listUsers: async (sub, page = 1, pageSize = 20) => {
+    const provider = 'auth0';
+    const subs = sub.split('|');
+    if (subs[0] === provider) {
+      const user = await models.User.findOne({
+        where: {
+          userId: Number(subs[1]),
+        },
+        attributes: ['userId'],
+        raw: true,
+      });
+
+      if (!user) {
+        return {
+          rows: [],
+          count: 0,
+        };
+      }
+    }
+
     const attributes = ['userId', 'nickname', 'lastSession', 'lastLogin', 'loginsCount', 'email', 'createdAt'];
     const users = await models.User.findAndCountAll({
       order: [['userId', 'DESC']],
@@ -31,11 +51,32 @@ const self = {
   },
   /**
    *
-   * @param {string} timezone
+   * @param {string} sub
    * @returns {Promise<{userCount: number,
    *  userSessionCount: {todayTotal: number, last7DaysAverage: number}}>}
    */
-  summaryUsers: async () => {
+  summaryUsers: async (sub) => {
+    const provider = 'auth0';
+    const subs = sub.split('|');
+    if (subs[0] === provider) {
+      const user = await models.User.findOne({
+        where: {
+          userId: Number(subs[1]),
+        },
+        attributes: ['userId'],
+        raw: true,
+      });
+      if (!user) {
+        return {
+          userCount: -1,
+          userSessionCount: {
+            todayTotal: 0,
+            last7DaysAverage: 0,
+          },
+        };
+      }
+    }
+
     const timezone = 'UTC';
     const userCount = await models.User.count();
     const userSessionCount = {

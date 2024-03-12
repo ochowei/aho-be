@@ -16,7 +16,7 @@ const setupIdentity = async (sequelize) => {
   }, {
     sequelize, modelName: 'identity', engine: 'InnoDB', charset: 'utf8', collate: 'utf8_general_ci',
   });
-  await Identity.sync({ alter: true });
+  await Identity.sync({ alter: false });
 };
 // Export the models
 module.exports = { Identity, setupIdentity };
