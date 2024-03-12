@@ -10,3 +10,4 @@ coverage
 test-results.xml
 test.js
 auth_config.json
+.env

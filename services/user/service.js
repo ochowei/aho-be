@@ -1,4 +1,5 @@
 const axios = require('axios');
+
 const logger = require('../../helpers/common/log')('user-service');
 const {
   managementToken,
