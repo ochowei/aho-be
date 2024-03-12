@@ -50,7 +50,6 @@ router.put(
 router.delete(
   '/v1/remove',
   checkAuth0db,
-  checkEmail,
   service.remove,
   handleResponse,
 );
