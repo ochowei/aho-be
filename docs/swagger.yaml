@@ -5,6 +5,7 @@ info:
   description: AhoBe API documentation
 servers:
   - url: http://localhost:3002/api
+  - url: http://152.42.180.14:3002/api
 
 paths:
   /auth0db/v1/login:
@@ -295,7 +296,7 @@ paths:
                             minimum: 0
                             example: 100
 
-  /user/v1/verification/send:
+  /user/v1/verification/email:
     post:
       summary: Send verification email
       tags:

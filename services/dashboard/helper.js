@@ -21,10 +21,11 @@ const self = {
   listUsers: async (sub, page = 1, pageSize = 20) => {
     const provider = 'auth0';
     const subs = sub.split('|');
-    if (subs[0] === provider) {
+    if (subs.length === 2 && subs[0] === provider && !Number.isNaN(subs[1])) {
       const user = await models.User.findOne({
         where: {
           userId: Number(subs[1]),
+          emailVerified: true,
         },
         attributes: ['userId'],
         raw: true,
@@ -58,10 +59,11 @@ const self = {
   summaryUsers: async (sub) => {
     const provider = 'auth0';
     const subs = sub.split('|');
-    if (subs[0] === provider) {
+    if (subs.length === 2 && subs[0] === provider && !Number.isNaN(subs[1])) {
       const user = await models.User.findOne({
         where: {
           userId: Number(subs[1]),
+          emailVerified: true,
         },
         attributes: ['userId'],
         raw: true,
