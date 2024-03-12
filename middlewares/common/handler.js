@@ -56,6 +56,7 @@ const self = {
       const type = 'application/json';
       res.set('Content-Type', type);
       res.send(response);
+      return;
     }
     next();
   },
