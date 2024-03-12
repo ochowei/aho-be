@@ -6,6 +6,7 @@ const hello = require('./api/hello');
 const login = require('./api/login');
 const auth0db = require('./api/auth0db');
 const dashboard = require('./api/dashboard');
+const user = require('./api/user');
 
 const router = express.Router();
 let commitId = null;
@@ -28,7 +29,7 @@ const routes = {
     app.use('/api/login', login);
     app.use('/api/auth0db', auth0db);
     app.use('/api/dashboard', dashboard);
-
+    app.use('/api/user', user);
     // provide commit_id api
     router.get('/commit_id', (req, res) => {
       const result = getCommitId();

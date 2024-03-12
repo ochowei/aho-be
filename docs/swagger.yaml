@@ -284,6 +284,32 @@ paths:
                             minimum: 0
                             example: 100
 
+  /user/v1/verification/send:
+    post:
+      summary: Send verification email
+      tags:
+        - "user"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+      responses:
+        '200':
+          description: Successful send
+        # user not found
+        '404':
+          description: User not found
+        # user already verified
+        '409':
+          description: User already verified
+        # secToken invalid
+        '403':
+          description: Forbidden
    
           
         
