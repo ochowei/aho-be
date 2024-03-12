@@ -78,6 +78,7 @@ const self = {
       await helper.remove(Number(id));
       res.response = { msg: 'remove success' };
     } catch (err) {
+      logger.error(err);
       res.response = { code: RESPONSE_CODE.NOT_FOUND, msg: err.message };
     } finally {
       next();

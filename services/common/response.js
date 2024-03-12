@@ -16,7 +16,7 @@ const self = {
       data = {},
     } = res.response;
     if (code !== 0) {
-      res.locals.logger.warn(`code: ${code}`);
+      res.locals.logger.warn(`msg: ${msg}`);
       res.status(code);
     }
     const response = { msg, data };
