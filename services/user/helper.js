@@ -1,9 +1,10 @@
 const { models } = require('../../models');
 
+const provider = 'auth0';
+
 const self = {
 
   getUser: async (email) => {
-    const provider = 'authdb';
     const user = await models.User.findOne({
       where: {
         sub: `${provider}|${email}`,

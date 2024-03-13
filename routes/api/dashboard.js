@@ -11,6 +11,7 @@ router.get(
   '/v1/users',
   checkJWT,
   service.listUsers,
+  service.updateSessionTime,
   handleResponse,
 );
 
@@ -18,6 +19,7 @@ router.get(
   '/v1/summary',
   checkJWT,
   service.summaryUsers,
+  service.updateSessionTime,
   handleResponse,
 );
 

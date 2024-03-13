@@ -8,8 +8,12 @@ const self = {
     const { email, password } = req.body;
     try {
       const user = await helper.comparePassword(email, password);
+      if (user) {
+        await helper.login(email);
+      }
       res.response = { data: user };
     } catch (err) {
+      console.error(err);
       logger.error(err);
       res.response = { code: RESPONSE_CODE.UNAUTHORIZED, msg: err.msg };
     }

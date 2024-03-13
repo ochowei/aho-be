@@ -2,6 +2,8 @@ const momnent = require('moment-timezone');
 const sequelize = require('sequelize');
 const { models } = require('../../models');
 
+const provider = 'auth0';
+
 const self = {
   /**
      *
@@ -19,9 +21,8 @@ const self = {
      * }>, count: number}>}
      */
   listUsers: async (sub, page = 1, pageSize = 20) => {
-    const provider = 'auth0';
     const subs = sub.split('|');
-    if (subs.length === 2 && subs[0] === provider && !Number.isNaN(subs[1])) {
+    if (subs.length === 2 && subs[0] === provider && !Number.isNaN(Number(subs[1]))) {
       const user = await models.User.findOne({
         where: {
           userId: Number(subs[1]),
@@ -34,7 +35,7 @@ const self = {
       if (!user) {
         return {
           rows: [],
-          count: 0,
+          count: -1,
         };
       }
     }
@@ -57,9 +58,8 @@ const self = {
    *  userSessionCount: {todayTotal: number, last7DaysAverage: number}}>}
    */
   summaryUsers: async (sub) => {
-    const provider = 'auth0';
     const subs = sub.split('|');
-    if (subs.length === 2 && subs[0] === provider && !Number.isNaN(subs[1])) {
+    if (subs.length === 2 && subs[0] === provider && !Number.isNaN(Number(subs[1]))) {
       const user = await models.User.findOne({
         where: {
           userId: Number(subs[1]),
@@ -98,7 +98,7 @@ const self = {
       group: ['lastSessionDateOnly'],
     });
     const last7DaysCount = last7DaysCountGroup.reduce((acc, row) => acc + row.get('count'), 0);
-    const days = last7DaysCountGroup.length;
+    const days = last7DaysCountGroup.length || 1;
     const todayCount = await models.User.count({
       where: {
         lastSession: {
@@ -113,6 +113,48 @@ const self = {
       userCount,
       userSessionCount,
     };
+  },
+
+  /**
+   *
+   * @param {string} sub
+   */
+  updateSessionTime: async (sub) => {
+    const subs = sub.split('|');
+    let querySub = sub;
+    if (subs.length >= 2 && subs[0] === provider && !Number.isNaN(Number(subs[1]))) {
+      const userId = Number(subs[1]);
+      const user = await models.User.findOne({
+        where: {
+          userId,
+        },
+        attributes: ['userId', 'sub'],
+      });
+      querySub = user.sub;
+    }
+    const now = new Date();
+    await models.User.update({
+      lastSession: now,
+      lastSessionDateOnly: now,
+    }, {
+      where: {
+        sub: querySub,
+      },
+    });
+  },
+
+  upsertUserProfile: async (sub, email) => {
+    const [user] = await models.User.findOrCreate({
+      where: {
+        sub,
+      },
+      attributes: ['userId'],
+      defaults: {
+        email,
+      },
+    });
+
+    return user;
   },
 };
 

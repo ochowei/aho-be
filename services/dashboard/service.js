@@ -1,5 +1,5 @@
 // const { auth } = require('express-oauth2-jwt-bearer');
-const helper = require('./helper');
+const helper = require('./dashboardHelper');
 
 const self = {
 
@@ -22,6 +22,16 @@ const self = {
 
     const summary = await helper.summaryUsers(sub);
     res.response = { data: summary };
+    next();
+  },
+
+  updateSessionTime: async (req, res, next) => {
+    let sub = req.auth && req.auth.payload && req.auth.payload.sub;
+    if (!sub) {
+      sub = req.headers.sub;
+    }
+
+    await helper.updateSessionTime(sub);
     next();
   },
 };

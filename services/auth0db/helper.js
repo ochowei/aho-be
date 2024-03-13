@@ -2,7 +2,7 @@ const bcrypt = require('bcrypt');
 
 const { models } = require('../../models');
 
-const provider = 'authdb';
+const provider = 'auth0';
 
 const bcryptSaltRounds = 10;
 
@@ -45,6 +45,30 @@ const self = {
       email: user.email,
       emailVerified: user.emailVerified,
     };
+  },
+
+  /**
+   *
+   * @param {string} email
+   */
+  login: async (email) => {
+    const user = await models.User.findOne({
+      where: {
+        email,
+      },
+      attributes: ['userId', 'lastLogin', 'lastSession', 'lastSessionDateOnly', 'loginsCount'],
+    });
+    if (!user) {
+      throw new Error('User not found');
+    }
+
+    const now = new Date();
+
+    user.lastLogin = now;
+    user.lastSession = now;
+    user.lastSessionDateOnly = now;
+    await user.save();
+    await user.increment('loginsCount');
   },
 
   /**
