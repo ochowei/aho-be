@@ -17,7 +17,8 @@ const self = {
      *  lastLogin: Date,
      *  loginCount: number,
      *  email: string,
-     *  createdAt: Date
+     *  createdAt: Date,
+     *  sub: string
      * }>, count: number}>}
      */
   listUsers: async (sub, page = 1, pageSize = 20) => {
@@ -40,7 +41,7 @@ const self = {
       }
     }
 
-    const attributes = ['userId', 'nickname', 'lastSession', 'lastLogin', 'loginsCount', 'email', 'createdAt'];
+    const attributes = ['userId', 'nickname', 'lastSession', 'lastLogin', 'loginsCount', 'email', 'createdAt', 'sub'];
     const users = await models.User.findAndCountAll({
       order: [['userId', 'DESC']],
       attributes,
