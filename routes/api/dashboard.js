@@ -3,7 +3,7 @@ const { auth } = require('express-oauth2-jwt-bearer');
 
 const router = express.Router();
 const { handleResponse } = require('../../services/common/response');
-const service = require('../../services/dashboard/service');
+const service = require('../../services/dashboard/dashboardService');
 
 const checkJWT = auth();
 

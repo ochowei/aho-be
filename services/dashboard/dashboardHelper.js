@@ -118,8 +118,9 @@ const self = {
   /**
    *
    * @param {string} sub
+   * @param {Date} date
    */
-  updateSessionTime: async (sub) => {
+  updateSessionTime: async (sub, date) => {
     const subs = sub.split('|');
     let querySub = sub;
     if (subs.length >= 2 && subs[0] === provider && !Number.isNaN(Number(subs[1]))) {
@@ -132,13 +133,15 @@ const self = {
       });
       querySub = user.sub;
     }
-    const now = new Date();
     await models.User.update({
-      lastSession: now,
-      lastSessionDateOnly: now,
+      lastSession: date,
+      lastSessionDateOnly: date,
     }, {
       where: {
         sub: querySub,
+        lastSession: {
+          [sequelize.Op.lt]: date,
+        },
       },
     });
   },
