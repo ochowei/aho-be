@@ -1,13 +1,11 @@
 const { models } = require('../../models');
 
-const provider = 'auth0';
-
 const self = {
 
-  getUser: async (email) => {
+  getUser: async (userId) => {
     const user = await models.User.findOne({
       where: {
-        sub: `${provider}|${email}`,
+        userId,
       },
     });
     if (!user) {

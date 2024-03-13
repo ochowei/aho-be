@@ -4,7 +4,6 @@ const logger = require('../../helpers/common/log')('user-service');
 const {
   managementToken,
 } = require('../../config/authconfig');
-const helper = require('./helper');
 /**
 
  * @returns {Promise<string>}
@@ -66,11 +65,14 @@ const resendVerificationEmail = async (userId) => {
 
 const self = {
   // middleware
-  sendVerificationEmail: async (req, res) => {
-    const { email } = req.body;
-    const user = await helper.getUser(email);
+  sendVerificationEmail: async (req, res, next) => {
+    const sub = req.auth?.payload?.sub;
+    if (!sub || !sub.startsWith('auth0|')) {
+      next();
+      return;
+    }
+    const userId = sub;
 
-    const userId = `auth0|${user.userId}`;
     try {
       await resendVerificationEmail(userId);
       res.status(200).json({ msg: 'Verification email sent' });
