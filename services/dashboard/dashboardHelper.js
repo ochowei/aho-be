@@ -88,18 +88,15 @@ const self = {
     };
     const today = momnent().tz(timezone).startOf('day');
     const last7Days = momnent().tz(timezone).subtract(7, 'days').startOf('day');
-    const last7DaysCountGroup = await models.User.findAll({
-      attributes: ['lastSessionDateOnly',
-        [sequelize.fn('COUNT', sequelize.col('userId')), 'count']],
+    const last7DaysCount = await models.User.count({
+
       where: {
         lastSession: {
           [sequelize.Op.gte]: last7Days.toDate(),
         },
       },
-      group: ['lastSessionDateOnly'],
     });
-    const last7DaysCount = last7DaysCountGroup.reduce((acc, row) => acc + row.get('count'), 0);
-    const days = last7DaysCountGroup.length || 1;
+    const days = 7;
     const todayCount = await models.User.count({
       where: {
         lastSession: {
@@ -108,7 +105,8 @@ const self = {
       },
     });
     userSessionCount.todayTotal = todayCount;
-    userSessionCount.last7DaysAverage = last7DaysCount / days;
+    // round to 2 decimal places
+    userSessionCount.last7DaysAverage = parseFloat((last7DaysCount / days).toFixed(2));
 
     return {
       userCount,
