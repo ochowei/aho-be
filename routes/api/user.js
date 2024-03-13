@@ -14,4 +14,12 @@ router.post(
   handleResponse,
 );
 
+router.post(
+  '/v1/afterauth',
+  checkJWT,
+  service.incrUserLoginCount,
+  service.updateSocialUserProfile,
+  handleResponse,
+);
+
 module.exports = router;

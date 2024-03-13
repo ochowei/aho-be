@@ -4,6 +4,7 @@ const logger = require('../../helpers/common/log')('user-service');
 const {
   managementToken,
 } = require('../../config/authconfig');
+const userHelper = require('./userHelper');
 /**
 
  * @returns {Promise<string>}
@@ -80,5 +81,35 @@ const self = {
       res.status(500).json({ msg: error.msg });
     }
   },
+  incrUserLoginCount: async (req, res, next) => {
+    const sub = req.auth?.payload?.sub;
+
+    try {
+      const user = await userHelper.getUserFromSub(sub);
+      await userHelper.incrUserLoginCount(user.userId, user.sub);
+    } catch (err) {
+      console.error(err);
+    }
+
+    next();
+  },
+
+  updateSocialUserProfile: async (req, res, next) => {
+    const sub = req.auth?.payload?.sub;
+
+    if (!sub || sub.startsWith('auth0|')) {
+      next();
+      return;
+    }
+    console.log(req.body);
+    const { user } = req.body;
+    try {
+      await userHelper.upsertUserProfile({ ...user, sub });
+    } catch (err) {
+      console.error(err);
+    }
+    next();
+  },
+
 };
 module.exports = self;
