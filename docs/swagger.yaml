@@ -15,12 +15,23 @@ components:
       scheme: bearer
       bearerFormat: JWT    
       description: Auth0 token
+    
+    secToken:
+      type: apiKey
+      in: header
+      name: secToken
+      description: Used to connect from auth0 custom database
+
+
+
 paths:
   /auth0db/v1/login:
     put:
       summary: Login endpoint
       tags:
         - "auth0db"
+      security:
+        - secToken: []      
       requestBody:
         required: true
         content:
@@ -32,8 +43,7 @@ paths:
                   type: string
                 password:
                   type: string
-                secToken:
-                  type: string
+    
       responses:
         '200':
           description: Successful login
@@ -52,6 +62,8 @@ paths:
       summary: Create user auth0 endpoint
       tags:
         - "auth0db"
+      security:
+        - secToken: []      
       requestBody:
         required: true
         content:
@@ -63,8 +75,7 @@ paths:
                   type: string
                 password:
                   type: string
-                secToken:
-                  type: string
+
       responses:
         '200':
           description: Successful creation
@@ -74,9 +85,7 @@ paths:
         # user already exists
         '409':
           description: User already exists
-        # secToken invalid
-        '403':
-          description: Forbidden
+
        
   
   /auth0db/v1/verify:
@@ -84,6 +93,9 @@ paths:
       summary: Verify email
       tags:
         - "auth0db"
+      security:
+        - secToken: []
+      
       requestBody:
         required: true
         content:
@@ -93,23 +105,22 @@ paths:
               properties:
                 email:
                   type: string
-                secToken:
-                  type: string
+
       responses:
         '200':
           description: Successful verification
         # user already verified
         # '409':
         #   description: User already verified
-        # secToken invalid
-        '403':
-          description: Forbidden
+
 
   /auth0db/v1/changePassword:
     put:
       summary: Change password
       tags:
         - "auth0db"
+      security:
+        - secToken: []
       requestBody:
         required: true
         content:
@@ -121,8 +132,7 @@ paths:
                   type: string
                 password:
                   type: string
-                secToken:
-                  type: string
+
       responses:
         '200':
           description: Successful change
@@ -141,6 +151,9 @@ paths:
       summary: Login by email
       tags:
         - "auth0db"
+      security:
+        - secToken: []
+      
       requestBody:
         required: true
         content:
@@ -150,8 +163,7 @@ paths:
               properties:
                 email:
                   type: string
-                secToken:
-                  type: string
+
       responses:
         '200':
           description: Successful login
@@ -160,14 +172,15 @@ paths:
         # user not found
         '404':
           description: User not found
-        '403':
-          description: Forbiddens
+
 
   /auth0db/v1/remove:
     delete:
       summary: Remove user
       tags:
         - "auth0db"
+      security:
+        - secToken: []
       requestBody:
         required: true
         content:
@@ -177,17 +190,14 @@ paths:
               properties:
                 email:
                   type: string
-                secToken:
-                  type: string
+
       responses:
         '200':
           description: Successful remove
         # user not found
         '404':
           description: User not found
-        # secToken invalid
-        '403':
-          description: Forbidden
+
 
 
   /dashboard/v1/users:
@@ -196,8 +206,7 @@ paths:
       tags:
         - "dashboard"
       security:
-        - auth0: []
-      
+        - auth0: []      
       parameters:
         # for pagination
         - name: page
@@ -334,9 +343,6 @@ paths:
         # user already verified
         '409':
           description: User already verified
-        # secToken invalid
-        '403':
-          description: Forbidden
 
   /user/v1/afterauth:
     post:
@@ -372,12 +378,7 @@ paths:
       responses:
         '200':
           description: Successful after auth
-        # user not found
-        '404':
-          description: User not found
-        # secToken invalid
-        '403':
-          description: Forbidden
+
    
           
         
