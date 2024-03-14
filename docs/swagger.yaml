@@ -6,7 +6,7 @@ info:
 servers:
   - url: http://localhost:3002/api
   - url: http://152.42.180.14:3002/api
-  - url: https://152.42.180.14/api
+  - url: https://152.42.180.14:40443/api
 
 components:
   securitySchemes:
