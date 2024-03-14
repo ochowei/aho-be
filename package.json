@@ -18,7 +18,7 @@
       }
     },
     "test": {
-      "command": "nyc --reporter=html --reporter=text --reporter=cobertura --exclude \"node_modules/**/*\" mocha \"./services/**/*.test.js\" --timeout 10000 --retries 5 --require ./test/setting.cjs --exit",
+      "command": "mocha \"./services/**/*.test.js\" \"./routes/**/*.test.js\" --timeout 10000 --retries 5 --require ./test/setting.cjs --exit",
       "env": {
         "ENV": "development"
       }
@@ -94,6 +94,7 @@
     "mocha-junit-reporter": "^2.0.0",
     "nyc": "^15.1.0",
     "prettier": "^2.3.2",
-    "sinon": "^11.1.1"
+    "sinon": "^11.1.1",
+    "supertest": "^6.3.4"
   }
 }
