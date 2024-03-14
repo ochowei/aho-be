@@ -56,8 +56,8 @@ const self = {
     logger.trace({ log: text, traceid });
   },
   checkAuth0db: (req, res, next) => {
-    const { secToken } = req.body;
-    if (secToken !== authConfig.secToken) {
+    const { sectoken } = req.headers;
+    if (sectoken !== authConfig.secToken) {
       const response = { msg: 'forbidden' };
       const code = RESPONSE_CODE.FORBIDDEN;
       res.response = { code, ...response };
