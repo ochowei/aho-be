@@ -116,10 +116,12 @@ const self = {
       },
     });
     if (!userAuth) {
-      throw new Error('User not found');
+      return false;
     }
     const oldEncryptedPassword = userAuth.encryptedPassword;
-    if (oldEncryptedPassword === encryptedPassword) {
+    const sameAsOld = await bcrypt.compare(password, oldEncryptedPassword);
+
+    if (sameAsOld) {
       throw new Error('New password is the same as the old password');
     }
     userAuth.encryptedPassword = encryptedPassword;

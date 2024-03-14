@@ -13,7 +13,6 @@ const self = {
       }
       res.response = { data: user };
     } catch (err) {
-      console.error(err);
       logger.error(err);
       res.response = { code: RESPONSE_CODE.UNAUTHORIZED, msg: err.msg };
     }
@@ -56,7 +55,7 @@ const self = {
         res.response = { code: RESPONSE_CODE.NOT_FOUND, msg: 'User not found' };
       }
     } catch (err) {
-      res.response = { msg: err.message };
+      res.response = { code: RESPONSE_CODE.INVALID_PARAMS, msg: err.message };
     } finally {
       next();
     }
