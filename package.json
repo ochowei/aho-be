@@ -68,10 +68,11 @@
     "shelljs": "^0.8.4",
     "simple-continuation-local-storage": "^1.0.22",
     "svg-captcha": "^1.4.0",
-    "swagger-jsdoc": "3.3.0",
-    "swagger-ui-express": "4.1.4",
+    "swagger-jsdoc": "^3.3.0",
+    "swagger-ui-express": "^4.1.4",
     "uuid": "^8.3.2",
-    "xss": "^1.0.13"
+    "xss": "^1.0.13",
+    "yaml": "^2.4.1"
   },
   "devDependencies": {
     "babel-eslint": "^10.1.0",

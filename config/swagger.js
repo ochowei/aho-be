@@ -1,20 +1,18 @@
 const swaggerJSDoc = require('swagger-jsdoc');
 
-const swaggerDefinition = {
-  info: {
-    title: 'playone api', // Title (required)
-    version: '1.0.0', // Version (required)
-    description: 'playone api', // Description (optional)
-  },
-  components: {},
-  schemes: ['https', 'http'],
-  // host: config.post.host // Host (optional)
-  // basePath: "/" // Base path (optional)
-};
+// const swaggerDefinition = {
+// info: {
+//   title: 'aho-be api', // Title (required)
+//   version: '1.0.0', // Version (required)
+//   description: 'aho-be api', // Description (optional)
+// },
+// components: {},
+// host: config.post.host // Host (optional)
+// basePath: "/" // Base path (optional)
+// };
 
 // Options for the swagger docs
 const options = {
-  swaggerDefinition,
   apis: ['./docs/*.yaml'],
 };
 

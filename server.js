@@ -5,11 +5,17 @@ const cors = require('cors');
 // const passport = require('passport');
 const responseTime = require('response-time');
 const swaggerUi = require('swagger-ui-express');
+const fs = require('fs');
+const YAML = require('yaml');
+
 const config = require('./config');
 const { RESPONSE_CODE } = require('./helpers/common/response');
 const { handleInterrupt, handleException } = require('./process');
 const logger = require('./helpers/common/log')('uncaught');
 
+const file = fs.readFileSync('./docs/swagger.yaml', 'utf8');
+
+const swaggerDocument = YAML.parse(file);
 const consoleLogger = console;
 
 const app = express();
@@ -28,14 +34,15 @@ const routes = require('./routes');
 
 app.use(middleware.traceID);
 app.use(responseTime(middleware.log));
+app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 routes.setup(app);
 
 const PORT = config.api.master.port || 3000;
 
-const swaggerSpec = require('./config/swagger');
+// const swaggerSpec = require('./config/swagger');
 
-app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+// app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 {
   // errorHandler 必須是最後一個註冊的 middleware
