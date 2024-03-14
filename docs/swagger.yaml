@@ -6,7 +6,15 @@ info:
 servers:
   - url: http://localhost:3002/api
   - url: http://152.42.180.14:3002/api
+  - url: https://152.42.180.14/api
 
+components:
+  securitySchemes:
+    auth0: 
+      type: http
+      scheme: bearer
+      bearerFormat: JWT    
+      description: Auth0 token
 paths:
   /auth0db/v1/login:
     put:
@@ -187,6 +195,9 @@ paths:
       summary: Get all users
       tags:
         - "dashboard"
+      security:
+        - auth0: []
+      
       parameters:
         # for pagination
         - name: page
@@ -262,6 +273,8 @@ paths:
       summary: Get users summary
       tags:
         - "dashboard"
+      security:
+        - auth0: []
       parameters:
         - name: sub
           in: header
@@ -301,6 +314,8 @@ paths:
       summary: Send verification email
       tags:
         - "user"
+      security:
+        - auth0: []
       requestBody:
         required: true
         content:
@@ -319,6 +334,47 @@ paths:
         # user already verified
         '409':
           description: User already verified
+        # secToken invalid
+        '403':
+          description: Forbidden
+
+  /user/v1/afterauth:
+    post:
+      summary: After auth
+      tags:
+        - "user"
+      security:
+        - auth0: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user:
+                  type: object
+                  required:
+                    - "email"
+                  properties:
+                    email:
+                      type: string
+                    nickname:
+                      type: string
+                    name:
+                      type: string
+                    picture:
+                      type: string
+                      format: uri
+                    locale:
+                      type: string
+
+      responses:
+        '200':
+          description: Successful after auth
+        # user not found
+        '404':
+          description: User not found
         # secToken invalid
         '403':
           description: Forbidden
