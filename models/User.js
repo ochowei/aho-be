@@ -43,7 +43,7 @@ const setupUser = async (sequelize) => {
     lastIp: DataTypes.STRING,
     loginsCount: {
       type: DataTypes.INTEGER,
-      defaultValue: 1,
+      defaultValue: 0,
       allowNull: false,
     },
     familyName: DataTypes.STRING,
