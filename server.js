@@ -49,7 +49,7 @@ app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 routes.setup(app);
 
-const PORT = config.api.master.port || 3000;
+const PORT = 3000;
 
 // const swaggerSpec = require('./config/swagger');
 
