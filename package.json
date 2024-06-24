@@ -20,7 +20,7 @@
     "test": {
       "command": "mocha \"./services/**/*.test.js\" \"./routes/**/*.test.js\" --timeout 10000 --retries 5 --require ./test/setting.cjs --exit",
       "env": {
-        "ENV": "development"
+        "ENV": "test"
       }
     },
     "lint": {
@@ -33,6 +33,7 @@
     "bunyan": "^1.8.14",
     "cors": "^2.8.5",
     "crypto-random-string": "^3.3.0",
+    "dotenv": "^16.4.5",
     "express": "^4.17.1",
     "express-async-errors": "^3.1.1",
     "express-joi-validation": "^5.0.0",
@@ -49,7 +50,7 @@
     "moment": "^2.29.1",
     "moment-timezone": "^0.5.31",
     "multer": "^1.4.2",
-    "mysql": "^2.18.1",
+    "mysql2": "^3.10.1",
     "nanoid": "^3.1.30",
     "node-dig-dns": "^0.3.2",
     "node-xlsx": "^0.16.1",

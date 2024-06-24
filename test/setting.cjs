@@ -4,9 +4,19 @@ const {
   initSequelize,
   sequelizePool,
 } = require('../connections/mysql');
-
+require('dotenv').config();
+// Load the .env variables
 const logger = console;
-
+const mysqlConfig = {
+  master: {
+    host: process.env.MYSQL_HOST,
+    port: process.env.MYSQL_PORT,
+    user: process.env.MYSQL_USER,
+    password: process.env.MYSQL_PASSWORD,
+    database: process.env.MYSQL_DATABASE,
+    // ca: process.env.MYSQL_CA.replace(/\\n/g, '\n'),
+  },
+};
 // global set up before all test
 exports.mochaGlobalSetup = async () => {
   logger.log('********* Unit Test Start *********');

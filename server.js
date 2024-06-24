@@ -12,6 +12,7 @@ const config = require('./config');
 const { RESPONSE_CODE } = require('./helpers/common/response');
 const { handleInterrupt, handleException } = require('./process');
 const logger = require('./helpers/common/log')('uncaught');
+require('dotenv').config(); // Load the .env variables
 
 const file = fs.readFileSync('./docs/swagger.yaml', 'utf8');
 
@@ -27,7 +28,17 @@ app.use(express.urlencoded({ extended: false }));
 
 const { initSequelize } = require('./connections/mysql');
 
-initSequelize(config.mysql); // TODO: error handle
+const mysqlConfig = {
+  master: {
+    host: process.env.MYSQL_HOST,
+    port: process.env.MYSQL_PORT,
+    user: process.env.MYSQL_USER,
+    password: process.env.MYSQL_PASSWORD,
+    database: process.env.MYSQL_DATABASE,
+    ca: process.env.MYSQL_CA,
+  },
+};
+initSequelize(mysqlConfig); // TODO: error handle
 
 const middleware = require('./middlewares/common/handler');
 const routes = require('./routes');

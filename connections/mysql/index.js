@@ -1,5 +1,5 @@
 const { Sequelize } = require('sequelize');
-const mysql = require('mysql');
+const mysql = require('mysql2');
 const { promisify } = require('util');
 
 const { debug } = require('../../config').system;
@@ -13,7 +13,16 @@ const defaultOptions = {
   charset: 'utf8mb4',
   connectTimeout: 30000,
   // decimalNumbers: true
+  // if process.env.ENV is set,
+
 };
+if (process.env.ENV !== 'test') {
+  console.log('mysql ssl');
+  defaultOptions.ssl = {
+    require: true,
+    ca: process.env.MYSQL_CA.replace(/\\n/g, '\n'),
+  };
+}
 /**
  * mariadb version setup function
  */
@@ -64,20 +73,19 @@ const initSequelize = async (config) => {
       {
         host: config[db].host,
         port: config[db].port,
-        dialect: 'mariadb',
+        dialect: 'mysql',
         dialectOptions: Object.assign(defaultOptions, {
           // Your mariadb options here
           // connectTimeout: 1000
-          requestTimeout: 3000,
-          useUTC: false, // for reading from database
           // timezone: "Etc/GMT+0", //for writing to database
-          skipSetTimezone: true,
         }),
+        timezone: '+00:00',
         logging: debug,
         pool: {
           max: MYSQL_CONNECTION_POOL_SIZE,
           min: 0,
           idle: 10000,
+          acquire: 30000,
         },
       },
     );

@@ -11,12 +11,15 @@ const config = {
     grant_type: 'client_credentials',
   },
 };
-const fs = require('fs');
 // if file exists, override the default config
 try {
   // read file by fs
-  const stringContent = fs.readFileSync(`${__dirname}/auth_config.json`, 'utf8');
-  const overrides = JSON.parse(stringContent);
+  const overrides = {
+    domain: process.env.AUTH0_DOMAIN,
+    clientId: process.env.AUTH0_CLIENT_ID,
+    audience: process.env.AUTH0_AUDIENCE,
+    secToken: process.env.AUTH0_SECTOKEN,
+  };
 
   config.secToken = overrides.secToken;
   config.managementToken = overrides.managementToken;
