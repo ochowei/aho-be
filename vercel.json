@@ -1,1 +1,20 @@
-{ "version": 2, "rewrites": [{ "source": "/api/:match", "destination": "/api/:match" }, {"source": "/docs", "destination": "/docs"}] }
+{
+    "version": 2,
+    "builds": [
+      {
+        "src": "server.js",
+        "use": "@vercel/node"
+      }
+    ],
+    "routes": [
+      {
+        "src": "/(.*)",
+        "dest": "/(.*)"
+      },
+        {
+            "src": "/docs",
+            "dest": "/docs"
+        }
+    ]
+  }
+  
