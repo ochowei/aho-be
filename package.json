@@ -7,6 +7,7 @@
   "license": "ISC",
   "scripts": {
     "start": "node server.js",
+    "build": "echo 'build'",
     "dev": "better-npm-run dev",
     "test": "better-npm-run test",
     "lint": "better-npm-run lint"
