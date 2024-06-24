@@ -12,4 +12,8 @@ router.put(
   service.login,
   handleResponse,
 );
+
+const app = express();
+app.use(router);
+
 module.exports = router;
