@@ -8,7 +8,7 @@ const { checkAuth0db, checkEmail } = require('../../../middlewares/common/handle
 
 router.put(
   '/api/auth0db/v1/login',
-  cors(),
+  cors({ origin: '*', methods: ['GET', 'POST', 'PUT', 'DELETE'] }),
   checkAuth0db,
   checkEmail,
   service.login,
