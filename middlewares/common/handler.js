@@ -3,10 +3,10 @@ const cls = require('simple-continuation-local-storage');
 const { v4: uuidv4 } = require('uuid');
 const Joi = require('joi');
 
-const log = require('../../helpers/common/log');
+// const log = require('../../helpers/common/log');
 
-const logger = log('http');
-const apiLogger = log('api');
+const logger = console;
+// const apiLogger = console;
 const authConfig = require('../../config/authconfig');
 const { RESPONSE_CODE } = require('../../helpers/common/response');
 const { handleResponse } = require('../../services/common/response');
@@ -14,7 +14,7 @@ const { handleResponse } = require('../../services/common/response');
 const self = {
   traceID: (req, res, next) => {
     const traceid = uuidv4();
-    const localLogger = apiLogger.child({ traceid });
+    const localLogger = console; // apiLogger.child({ traceid });
     res.locals.logger = localLogger;
     // @ts-ignore
     cls.traceid = traceid;

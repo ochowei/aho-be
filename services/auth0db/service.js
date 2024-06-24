@@ -1,6 +1,7 @@
 const helper = require('./helper');
 const { RESPONSE_CODE } = require('../../helpers/common/response');
-const logger = require('../../helpers/common/log')('auth0db');
+
+const logger = console;
 
 const self = {
   login: async (req, res, next) => {
