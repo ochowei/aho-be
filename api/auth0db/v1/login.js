@@ -1,4 +1,5 @@
 const express = require('express');
+const cors = require('cors');
 
 const router = express.Router();
 const { handleResponse } = require('../../../services/common/response');
@@ -7,6 +8,7 @@ const { checkAuth0db, checkEmail } = require('../../../middlewares/common/handle
 
 router.put(
   '/api/auth0db/v1/login',
+  cors(),
   checkAuth0db,
   checkEmail,
   service.login,
