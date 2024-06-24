@@ -10,7 +10,6 @@ const self = {
   handleResponse: async (req = {}, res = {}) => {
     if (!res.response) res.response = {};
     const {
-      type = 'application/json',
       code = 0,
       msg = `${req.method} ${req.baseUrl}${req.path} successful`,
       data = {},
@@ -20,8 +19,8 @@ const self = {
       res.status(code);
     }
     const response = { msg, data };
-    res.set('Content-Type', type);
-    res.send(response);
+    // res.set('Content-Type', type);
+    res.json(response);
   },
 
   /**
