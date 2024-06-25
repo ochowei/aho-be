@@ -69,6 +69,7 @@ const self = {
   sendVerificationEmail: async (req, res, next) => {
     try {
       const sub = req.auth?.payload?.sub;
+      console.info('sub', sub);
       if (!sub || !sub.startsWith('auth0|')) {
         next();
         return;
