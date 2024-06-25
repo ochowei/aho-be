@@ -29,4 +29,4 @@ router.options(
 const app = express();
 app.use(router);
 
-module.exports = router;
+module.exports = app;
