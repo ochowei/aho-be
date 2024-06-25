@@ -53,20 +53,12 @@ const resendVerificationEmail = async (userId) => {
     },
     data,
   };
-  console.info('config', config);
 
-  axios.request(config)
-    .then((response) => {
-      console.info(JSON.stringify(response.data));
-    })
-    .catch((error) => {
-      console.error(error);
-      throw error;
-    });
-  const res1 = await axios.request(config);
-  const res2 = await axios(config);
-  console.info('res1', res1);
-  console.info('res2', res2);
+  try {
+    await axios(config);
+  } catch (error) {
+    console.error(error);
+  }
 };
 
 const self = {
