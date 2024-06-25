@@ -62,6 +62,10 @@ const resendVerificationEmail = async (userId) => {
       console.error(error);
       throw error;
     });
+  const res1 = await axios.request(config);
+  const res2 = await axios(config);
+  console.info('res1', res1);
+  console.info('res2', res2);
 };
 
 const self = {
