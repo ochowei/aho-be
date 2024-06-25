@@ -27,6 +27,7 @@ const self = {
       res.response = { msg: 'create user success' };
     } catch (err) {
       res.response = { code: RESPONSE_CODE.USERID_EXIST, msg: err.message };
+      console.error(err);
     }
     next();
   },
