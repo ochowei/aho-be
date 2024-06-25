@@ -10,6 +10,7 @@ const logger = console;
 const authConfig = require('../../config/authconfig');
 const { RESPONSE_CODE } = require('../../helpers/common/response');
 const { handleResponse } = require('../../services/common/response');
+const { initSequelize } = require('../../connections/mysql');
 
 const self = {
   traceID: (req, res, next) => {
@@ -97,6 +98,20 @@ const self = {
       return;
     }
 
+    next();
+  },
+
+  setupSequelize: async (req, res, next) => {
+    const mysqlConfig = {
+      master: {
+        host: process.env.MYSQL_HOST,
+        port: process.env.MYSQL_PORT,
+        user: process.env.MYSQL_USER,
+        password: process.env.MYSQL_PASSWORD,
+        database: process.env.MYSQL_DATABASE,
+      },
+    };
+    await initSequelize(mysqlConfig); // TODO: error handle
     next();
   },
 };

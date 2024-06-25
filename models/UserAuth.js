@@ -21,7 +21,7 @@ const setupUserAuth = async (sequelize) => {
   }, {
     sequelize, modelName: 'userAuth', engine: 'InnoDB', charset: 'utf8', collate: 'utf8_general_ci',
   }); // modified model name to camel case
-  await UserAuth.sync({ alter: false });
+  // await UserAuth.sync({ alter: false });
 };
 
 // Export the model

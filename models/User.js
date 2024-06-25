@@ -64,7 +64,7 @@ const setupUser = async (sequelize) => {
       },
     ],
   });
-  await User.sync({ alter: false });
+  // await User.sync({ alter: false });
 };
 // Export the models
 module.exports = { User, setupUser };

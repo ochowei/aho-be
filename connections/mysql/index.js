@@ -16,13 +16,7 @@ const defaultOptions = {
   // if process.env.ENV is set,
 
 };
-if (process.env.ENV !== 'test') {
-  console.log('mysql ssl');
-  defaultOptions.ssl = {
-    require: true,
-    ca: process.env.MYSQL_CA.replace(/\\n/g, '\n'),
-  };
-}
+
 /**
  * mariadb version setup function
  */
@@ -66,6 +60,12 @@ const initSequelize = async (config) => {
   alreadyInit = true;
   await setupMysql(config);
   Object.keys(config).forEach((db) => {
+    if (process.env.ENV !== 'test' && config[db].host !== '127.0.0.1') {
+      defaultOptions.ssl = {
+        require: true,
+        ca: process.env.MYSQL_CA.replace(/\\n/g, '\n'),
+      };
+    }
     const conn = new Sequelize(
       config[db].database,
       config[db].user,
