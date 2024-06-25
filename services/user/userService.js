@@ -67,17 +67,17 @@ const resendVerificationEmail = async (userId) => {
 const self = {
   // middleware
   sendVerificationEmail: async (req, res, next) => {
-    const sub = req.auth?.payload?.sub;
-    if (!sub || !sub.startsWith('auth0|')) {
-      next();
-      return;
-    }
-    const userId = sub;
-
     try {
+      const sub = req.auth?.payload?.sub;
+      if (!sub || !sub.startsWith('auth0|')) {
+        next();
+        return;
+      }
+      const userId = sub;
       await resendVerificationEmail(userId);
       res.status(200).json({ msg: 'Verification email sent' });
     } catch (error) {
+      console.error(error);
       res.status(500).json({ msg: error.msg });
     }
   },
