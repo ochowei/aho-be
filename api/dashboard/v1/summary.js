@@ -27,4 +27,7 @@ router.options(
   },
 );
 
-module.exports = router;
+const app = express();
+app.use(router);
+
+module.exports = app;
