@@ -53,6 +53,7 @@ const resendVerificationEmail = async (userId) => {
     },
     data,
   };
+  console.info('config', config);
 
   axios.request(config)
     .then((response) => {
