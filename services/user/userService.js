@@ -56,7 +56,7 @@ const resendVerificationEmail = async (userId) => {
 
   axios.request(config)
     .then((response) => {
-      console.log(JSON.stringify(response.data));
+      console.info(JSON.stringify(response.data));
     })
     .catch((error) => {
       console.error(error);
