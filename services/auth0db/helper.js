@@ -149,8 +149,14 @@ const self = {
         userId: id,
       },
     });
+    if (!user) {
+      return;
+    }
     const { email } = user;
     await user.destroy();
+    if (!email) {
+      return;
+    }
     await models.UserAuth.destroy({
       where: {
         email,
