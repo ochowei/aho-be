@@ -11,7 +11,7 @@ const self = {
     if (!res.response) res.response = {};
     const {
       code = 0,
-      msg = `${req.method} ${req.baseUrl}${req.path} successful`,
+      msg = `${req.method} ${req.url} successful`,
       data = {},
     } = res.response;
     if (code !== 0) {
